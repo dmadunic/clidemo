@@ -1,6 +1,5 @@
 package com.ag04.clidemo.shell;
 
-import org.jline.reader.Highlighter;
 import org.jline.reader.LineReader;
 import org.springframework.util.StringUtils;
 
@@ -38,7 +37,6 @@ public class InputReader {
      */
     public String prompt(String  prompt, String defaultValue, boolean echo) {
         String answer = "";
-        Highlighter highlighter = lineReader.getHighlighter();
 
         if (echo) {
             answer = lineReader.readLine(prompt + ": ");

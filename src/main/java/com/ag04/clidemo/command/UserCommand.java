@@ -31,7 +31,7 @@ public class UserCommand {
         CliUser user = new CliUser();
         user.setUsername(username);
 
-        //--- read user's fullName --------------------------------------------
+        // 1. read user's fullName --------------------------------------------
         do {
             String fullName = inputReader.prompt("Full name");
             if (StringUtils.isEmpty(fullName)) {
@@ -41,7 +41,23 @@ public class UserCommand {
             }
         } while (user.getFullName() == null);
 
-        shellHelper.print("Creating user: " + user);
+        // 2. read user's password --------------------------------------------
+        do {
+            String password = inputReader.prompt("Password", null, false);
+            if (StringUtils.isEmpty(password)) {
+                shellHelper.printWarning("Password'CAN NOT be empty string? Please enter valid value!");
+            } else {
+                user.setPassword(password);
+            }
+        } while (user.getPassword() == null);
 
+        shellHelper.print("\nUsername: " + user.getUsername());
+        shellHelper.print("Password: " + user.getPassword());
+        shellHelper.print("Fullname: " + user.getFullName());
+        shellHelper.print("Gender: " + user.getGender());
+        shellHelper.print("Superuser: " + user.isSuperuser());
+
+        CliUser createdUser = userService.create(user);
+        shellHelper.printSuccess("---> SUCCESS created user with id=" + createdUser.getId());
     }
 }

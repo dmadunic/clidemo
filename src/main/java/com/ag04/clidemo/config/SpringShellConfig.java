@@ -23,7 +23,12 @@ public class SpringShellConfig {
     }
 
     @Bean
-    @Lazy
+    public InputReader inputReader(@Lazy LineReader lineReader) {
+        return new InputReader(lineReader);
+    }
+
+    /*
+    @Bean
     public InputReader inputReader(@Lazy Terminal terminal, @Lazy Parser parser) {
         LineReaderBuilder lineReaderBuilder = LineReaderBuilder.builder().terminal(terminal).highlighter(
             (LineReader reader, String buffer) -> {
@@ -36,6 +41,6 @@ public class SpringShellConfig {
         LineReader lineReader = lineReaderBuilder.build();
         lineReader.unsetOpt(LineReader.Option.INSERT_TAB);
         return new InputReader(lineReader);
-    }
+    }*/
 
 }

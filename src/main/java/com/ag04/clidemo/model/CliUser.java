@@ -6,7 +6,7 @@ public class CliUser {
     private String password;
     private String fullName;
     private Gender gender;
-    private String defaultRole;
+    private boolean superuser;
 
     public Long getId() {
         return id;
@@ -48,11 +48,11 @@ public class CliUser {
         this.gender = gender;
     }
 
-    public String getDefaultRole() {
-        return defaultRole;
+    public boolean isSuperuser() {
+        return superuser;
     }
 
-    public void setDefaultRole(String defaultRole) {
-        this.defaultRole = defaultRole;
+    public void setSuperuser(boolean superuser) {
+        this.superuser = superuser;
     }
 }
