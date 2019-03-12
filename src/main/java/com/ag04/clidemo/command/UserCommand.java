@@ -31,31 +31,34 @@ public class UserCommand {
         CliUser user = new CliUser();
         user.setUsername(username);
 
+        shellHelper.printInfo("Please enter new user data:");
         // 1. read user's fullName --------------------------------------------
         do {
             String fullName = inputReader.prompt("Full name");
-            if (StringUtils.isEmpty(fullName)) {
-                shellHelper.printWarning("User's full name CAN NOT be empty string? Please enter valid value!");
-            } else {
+            if (StringUtils.hasText(fullName)) {
                 user.setFullName(fullName);
+            } else {
+                shellHelper.printWarning("User's full name CAN NOT be empty string? Please enter valid value!");
             }
         } while (user.getFullName() == null);
 
         // 2. read user's password --------------------------------------------
         do {
-            String password = inputReader.prompt("Password", null, false);
-            if (StringUtils.isEmpty(password)) {
-                shellHelper.printWarning("Password'CAN NOT be empty string? Please enter valid value!");
-            } else {
+            String password = inputReader.prompt("Password", "secret", false);
+            if (StringUtils.hasText(password)) {
                 user.setPassword(password);
+            } else {
+                shellHelper.printWarning("Password'CAN NOT be empty string? Please enter valid value!");
             }
         } while (user.getPassword() == null);
 
-        shellHelper.print("\nUsername: " + user.getUsername());
+        // Print user's input -------------------------------------------------
+        shellHelper.printInfo("\nNew user data:");
+        shellHelper.print("Username: " + user.getUsername());
         shellHelper.print("Password: " + user.getPassword());
         shellHelper.print("Fullname: " + user.getFullName());
         shellHelper.print("Gender: " + user.getGender());
-        shellHelper.print("Superuser: " + user.isSuperuser());
+        shellHelper.print("Superuser: " + user.isSuperuser() + "\n");
 
         CliUser createdUser = userService.create(user);
         shellHelper.printSuccess("---> SUCCESS created user with id=" + createdUser.getId());
