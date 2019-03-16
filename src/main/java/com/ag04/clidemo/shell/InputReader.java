@@ -3,6 +3,11 @@ package com.ag04.clidemo.shell;
 import org.jline.reader.LineReader;
 import org.springframework.util.StringUtils;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 public class InputReader {
 
     public static final Character DEFAULT_MASK = '*';
@@ -11,12 +16,15 @@ public class InputReader {
 
     private LineReader lineReader;
 
-    public InputReader(LineReader lineReader) {
-        this(lineReader, null);
+    ShellHelper shellHelper;
+
+    public InputReader(LineReader lineReader, ShellHelper shellHelper) {
+        this(lineReader, shellHelper, null);
     }
 
-    public InputReader(LineReader lineReader, Character mask) {
+    public InputReader(LineReader lineReader, ShellHelper shellHelper, Character mask) {
         this.lineReader = lineReader;
+        this.shellHelper = shellHelper;
         this.mask = mask != null ? mask : DEFAULT_MASK;
     }
 
@@ -27,6 +35,7 @@ public class InputReader {
     public String prompt(String  prompt, String defaultValue) {
         return prompt(prompt, defaultValue, true);
     }
+
     /**
      * Prompts user for input.
      *
@@ -48,4 +57,49 @@ public class InputReader {
         }
         return answer;
     }
+
+    //--- select one option from the list of values ---------------------------
+
+    public String selectFromList(String promptMessage, Map<String, String> options, boolean ignoreCase, String defaultValue) {
+        String answer;
+        Set<String> allowedAnswers = new HashSet<>(options.keySet());
+        if (defaultValue != null && !defaultValue.equals("")) {
+            allowedAnswers.add("");
+        }
+
+        do {
+            for (Map.Entry<String, String> option: options.entrySet()) {
+                String defaultMarker = null;
+                if (defaultValue != null) {
+                    if (option.getKey().equals(defaultValue)) {
+                        defaultMarker = "*";
+                    }
+                }
+                if (defaultMarker != null) {
+                    shellHelper.printInfo(String.format("%s [%s] %s ", defaultMarker, option.getKey(), option.getValue()));
+                } else {
+                    shellHelper.print(String.format("  [%s] %s", option.getKey(), option.getValue()));
+                }
+            }
+            answer = lineReader.readLine(String.format("%s: ", promptMessage));
+        } while (!containsString(allowedAnswers, answer, ignoreCase) && "" != answer);
+
+        if (StringUtils.isEmpty(answer) && allowedAnswers.contains("")) {
+            return defaultValue;
+        }
+        return answer;
+    }
+
+    private boolean containsString(Set <String> l, String s, boolean ignoreCase){
+        if (!ignoreCase) {
+            return l.contains(s);
+        }
+        Iterator<String> it = l.iterator();
+        while(it.hasNext()) {
+            if(it.next().equalsIgnoreCase(s))
+                return true;
+        }
+        return false;
+    }
+
 }

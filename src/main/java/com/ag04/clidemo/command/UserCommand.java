@@ -1,6 +1,7 @@
 package com.ag04.clidemo.command;
 
 import com.ag04.clidemo.model.CliUser;
+import com.ag04.clidemo.model.Gender;
 import com.ag04.clidemo.service.UserService;
 import com.ag04.clidemo.shell.InputReader;
 import com.ag04.clidemo.shell.ShellHelper;
@@ -9,6 +10,9 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ShellComponent
 public class UserCommand {
@@ -51,6 +55,16 @@ public class UserCommand {
                 shellHelper.printWarning("Password'CAN NOT be empty string? Please enter valid value!");
             }
         } while (user.getPassword() == null);
+
+        // 3. read user's Gender ----------------------------------------------
+        Map<String, String> options = new HashMap<>();
+        options.put("M", Gender.MALE.name());
+        options.put("F", Gender.FEMALE.name() );
+        options.put("D", Gender.DIVERSE.name());
+
+        String genderValue = inputReader.selectFromList("Please select one of the values", options, true, null);
+        Gender gender = Gender.valueOf(options.get(genderValue));
+        user.setGender(gender);
 
         // Print user's input -------------------------------------------------
         shellHelper.printInfo("\nNew user data:");
