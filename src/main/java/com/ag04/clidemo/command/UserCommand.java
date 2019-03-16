@@ -11,6 +11,7 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,23 +57,31 @@ public class UserCommand {
             }
         } while (user.getPassword() == null);
 
-        // 3. read user's Gender ----------------------------------------------
+        // 3. Prompt for user's Gender ----------------------------------------------
         Map<String, String> options = new HashMap<>();
         options.put("M", Gender.MALE.name());
         options.put("F", Gender.FEMALE.name() );
         options.put("D", Gender.DIVERSE.name());
 
-        String genderValue = inputReader.selectFromList("Please select one of the values", options, true, null);
+        String genderValue = inputReader.selectFromList("Gender", "Please enter one of the [] values", options, true, null);
         Gender gender = Gender.valueOf(options.get(genderValue));
         user.setGender(gender);
 
+        // 4. Prompt for superuser attribute
+        String superuserValue = inputReader.promptWithOptions("New user is superuser", "N", Arrays.asList("Y", "N"));
+        if ("Y".equals(superuserValue)) {
+            user.setSuperuser(true);
+        } else {
+            user.setSuperuser(false);
+        }
+
         // Print user's input -------------------------------------------------
-        shellHelper.printInfo("\nNew user data:");
+        shellHelper.printInfo("\nCreating new user:");
         shellHelper.print("Username: " + user.getUsername());
         shellHelper.print("Password: " + user.getPassword());
         shellHelper.print("Fullname: " + user.getFullName());
         shellHelper.print("Gender: " + user.getGender());
-        shellHelper.print("Superuser: " + user.isSuperuser() + "\n");
+        shellHelper.print("Superuser: " + user.isSuperuser());
 
         CliUser createdUser = userService.create(user);
         shellHelper.printSuccess("---> SUCCESS created user with id=" + createdUser.getId());
