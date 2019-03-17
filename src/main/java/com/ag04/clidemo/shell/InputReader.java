@@ -13,7 +13,7 @@ public class InputReader {
 
     private LineReader lineReader;
 
-    ShellHelper shellHelper;
+    private ShellHelper shellHelper;
 
     public InputReader(LineReader lineReader, ShellHelper shellHelper) {
         this(lineReader, shellHelper, null);
