@@ -19,8 +19,8 @@ import org.springframework.shell.jline.JLineShellAutoConfiguration;
 public class SpringShellConfig {
 
     @Bean
-    public ShellHelper shellHelper(@Lazy LineReader lineReader) {
-            return new ShellHelper(lineReader);
+    public ShellHelper shellHelper(@Lazy Terminal terminal) {
+            return new ShellHelper(terminal);
     }
 
     @Bean

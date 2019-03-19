@@ -2,7 +2,6 @@ package com.ag04.clidemo.shell;
 
 import org.jline.reader.LineReader;
 import org.springframework.util.StringUtils;
-
 import java.util.*;
 
 public class InputReader {

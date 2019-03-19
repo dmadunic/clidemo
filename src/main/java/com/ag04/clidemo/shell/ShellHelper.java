@@ -1,6 +1,6 @@
 package com.ag04.clidemo.shell;
 
-import org.jline.reader.LineReader;
+import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +19,10 @@ public class ShellHelper {
     @Value("${shell.out.error}")
     public String errorColor;
 
-    private LineReader lineReader;
+    private Terminal terminal;
 
-    public ShellHelper(LineReader lineReader) {
-        this.lineReader = lineReader;
+    public ShellHelper(Terminal terminal) {
+        this.terminal = terminal;
     }
 
     /**
@@ -110,6 +110,6 @@ public class ShellHelper {
         if (color != null) {
             toPrint = getColored(message, color);
         }
-        lineReader.getTerminal().writer().println(toPrint);
+        terminal.writer().println(toPrint);
     }
 }
