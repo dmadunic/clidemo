@@ -4,7 +4,6 @@ import org.jline.reader.LineReader;
 import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
 
 public class ShellHelper {
 
