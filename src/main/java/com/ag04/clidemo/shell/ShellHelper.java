@@ -112,4 +112,14 @@ public class ShellHelper {
         }
         terminal.writer().println(toPrint);
     }
+
+    //--- set / get methods ---------------------------------------------------
+
+    public Terminal getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(Terminal terminal) {
+        this.terminal = terminal;
+    }
 }

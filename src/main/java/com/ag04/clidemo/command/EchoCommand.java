@@ -1,6 +1,8 @@
 package com.ag04.clidemo.command;
 
+import com.ag04.clidemo.shell.ProgressBar;
 import com.ag04.clidemo.shell.ShellHelper;
+import org.jline.reader.LineReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -11,6 +13,10 @@ public class EchoCommand {
 
     @Autowired
     ShellHelper shellHelper;
+
+    @Autowired
+    ProgressBar progressBar;
+
 
     @ShellMethod("Displays greeting message to the user whose name is supplied")
     public String echo(@ShellOption({"-N", "--name"}) String name) {
@@ -24,4 +30,14 @@ public class EchoCommand {
         String output = shellHelper.getSuccessMessage(message);
         return output.concat(" You are running spring shell cli-demo.");
     }
+
+    @ShellMethod("Displays progress")
+    public void progress() throws InterruptedException {
+        for (int i = 1; i <=100; i++) {
+            progressBar.display(i);
+            Thread.sleep(200);
+        }
+        shellHelper.getTerminal().writer().println();
+    }
+
 }

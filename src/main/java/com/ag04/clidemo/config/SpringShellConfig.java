@@ -1,6 +1,7 @@
 package com.ag04.clidemo.config;
 
 import com.ag04.clidemo.shell.InputReader;
+import com.ag04.clidemo.shell.ProgressBar;
 import com.ag04.clidemo.shell.PromptColor;
 import com.ag04.clidemo.shell.ShellHelper;
 import org.jline.reader.History;
@@ -47,4 +48,10 @@ public class SpringShellConfig {
         lineReader.unsetOpt(LineReader.Option.INSERT_TAB);
         return new InputReader(lineReader, shellHelper);
     }
+
+    @Bean
+    public ProgressBar progressBar(ShellHelper shellHelper) {
+        return new ProgressBar(shellHelper);
+    }
+
 }
