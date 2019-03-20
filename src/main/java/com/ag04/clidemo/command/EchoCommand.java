@@ -50,6 +50,7 @@ public class EchoCommand {
             progressCounter.display();
             Thread.sleep(100);
         }
+        progressCounter.reset();
         shellHelper.getTerminal().writer().println();
     }
 
@@ -59,6 +60,7 @@ public class EchoCommand {
             progressCounter.display(i, "Processing");
             Thread.sleep(100);
         }
+        progressCounter.reset();
         shellHelper.getTerminal().writer().println();
     }
 
