@@ -1,9 +1,6 @@
 package com.ag04.clidemo.config;
 
-import com.ag04.clidemo.shell.InputReader;
-import com.ag04.clidemo.shell.ProgressBar;
-import com.ag04.clidemo.shell.PromptColor;
-import com.ag04.clidemo.shell.ShellHelper;
+import com.ag04.clidemo.shell.*;
 import org.jline.reader.History;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -52,6 +49,11 @@ public class SpringShellConfig {
     @Bean
     public ProgressBar progressBar(ShellHelper shellHelper) {
         return new ProgressBar(shellHelper);
+    }
+
+    @Bean
+    public ProgressCounter progressCounter(@Lazy Terminal terminal) {
+        return new ProgressCounter(terminal);
     }
 
 }

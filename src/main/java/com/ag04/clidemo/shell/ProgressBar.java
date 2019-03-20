@@ -17,10 +17,11 @@ public class ProgressBar {
     public void display(int percentage) {
         int x = (percentage/5);
         int y = 20-x;
-        String progressBar = "<";
+
         String done = shellHelper.getSuccessMessage(new String(new char[x]).replace("\0", doneMarker));
         String remains = new String(new char[y]).replace("\0", remainsMarker);
-        progressBar = String.format("%s%s%s%s %d", leftDelimiter, done, remains, rightDelimiter, percentage);
+
+        String progressBar = String.format("%s%s%s%s %d", leftDelimiter, done, remains, rightDelimiter, percentage);
 
         shellHelper.getTerminal().writer().print("\r" + progressBar + "%");
         shellHelper.getTerminal().flush();
