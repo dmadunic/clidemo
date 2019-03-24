@@ -35,18 +35,9 @@ public class EchoCommand {
         return output.concat(" You are running spring shell cli-demo.");
     }
 
-    @ShellMethod("Displays progress bar")
-    public void progressBar() throws InterruptedException {
-        for (int i = 1; i <=100; i++) {
-            progressBar.display(i);
-            Thread.sleep(100);
-        }
-        shellHelper.getTerminal().writer().println();
-    }
-
     @ShellMethod("Displays progress spinner")
     public void progressSpinner() throws InterruptedException {
-        for (int i = 1; i <=200; i++) {
+        for (int i = 1; i <=100; i++) {
             progressCounter.display();
             Thread.sleep(100);
         }
@@ -56,11 +47,20 @@ public class EchoCommand {
 
     @ShellMethod("Displays progress counter (with spinner)")
     public void progressCounter() throws InterruptedException {
-        for (int i = 1; i <=200; i++) {
+        for (int i = 1; i <=100; i++) {
             progressCounter.display(i, "Processing");
             Thread.sleep(100);
         }
         progressCounter.reset();
+        shellHelper.getTerminal().writer().println();
+    }
+
+    @ShellMethod("Displays progress bar")
+    public void progressBar() throws InterruptedException {
+        for (int i = 1; i <=100; i++) {
+            progressBar.display(i);
+            Thread.sleep(100);
+        }
         shellHelper.getTerminal().writer().println();
     }
 
