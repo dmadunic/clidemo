@@ -65,4 +65,5 @@ public class ProgressBar {
     public void setRightDelimiter(String rightDelimiter) {
         this.rightDelimiter = rightDelimiter;
     }
+
 }

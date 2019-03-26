@@ -111,6 +111,7 @@ public class ShellHelper {
             toPrint = getColored(message, color);
         }
         terminal.writer().println(toPrint);
+        terminal.flush();
     }
 
     //--- set / get methods ---------------------------------------------------
