@@ -5,15 +5,16 @@ import com.ag04.clidemo.model.Gender;
 import com.ag04.clidemo.service.UserService;
 import com.ag04.clidemo.shell.InputReader;
 import com.ag04.clidemo.shell.ShellHelper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.table.*;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @ShellComponent
 public class UserCommand {
@@ -26,6 +27,56 @@ public class UserCommand {
 
     @Autowired
     UserService userService;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @ShellMethod("Display list of users")
+    public void userList() {
+        List<CliUser> users = userService.findAll();
+
+        LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
+        headers.put("id", "Id");
+        headers.put("username", "Username");
+        headers.put("fullName", "Full name");
+        headers.put("gender", "Gender");
+        headers.put("superuser", "Superuser");
+        TableModel model = new BeanListTableModel<>(users, headers);
+
+        TableBuilder tableBuilder = new TableBuilder(model);
+        tableBuilder.addInnerBorder(BorderStyle.fancy_light);
+        tableBuilder.addHeaderBorder(BorderStyle.fancy_double);
+        shellHelper.print(tableBuilder.build().render(80));
+    }
+
+    @ShellMethod("Display details of user with supplied username")
+    public void userDetails(@ShellOption({"-U", "--username"}) String username) {
+        CliUser entity = userService.findByUsername(username);
+        LinkedHashMap<String, Object> labels = new LinkedHashMap<>();
+        labels.put("id", "Id");
+        labels.put("username", "Username");
+        labels.put("fullName", "Full name");
+        labels.put("gender", "Gender");
+        labels.put("superuser", "Superuser");
+        labels.put("password", "Password");
+
+        Map<String, String> map = objectMapper.convertValue(entity, new TypeReference<Map<String, String>>() {});
+        Object[][] entityProperties = new Object[map.size()+1][2];
+        entityProperties[0][0] = "Property";
+        entityProperties[0][1] = "Value";
+        int i = 1;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            entityProperties[i][0] = labels.get(entry.getKey());
+            entityProperties[i][1] = entry.getValue();
+            i++;
+        }
+        TableModel model = new ArrayTableModel(entityProperties);
+        TableBuilder tableBuilder = new TableBuilder(model);
+
+        tableBuilder.addInnerBorder(BorderStyle.fancy_light);
+        tableBuilder.addHeaderBorder(BorderStyle.fancy_double);
+        shellHelper.print(tableBuilder.build().render(80));
+    }
+
 
     @ShellMethod("Create new user with supplied username")
     public void createUser(@ShellOption({"-U", "--username"}) String username) {

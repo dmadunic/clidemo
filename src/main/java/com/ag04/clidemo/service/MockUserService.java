@@ -2,8 +2,15 @@ package com.ag04.clidemo.service;
 
 import com.ag04.clidemo.model.CliUser;
 import com.ag04.clidemo.observer.ProgressUpdateEvent;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,12 +20,43 @@ import java.util.Observer;
  */
 public class MockUserService extends Observable implements UserService {
 
+    private ObjectMapper objectMapper = new ObjectMapper();;
+
     private Observer observer;
+
+    private List<CliUser> users = new ArrayList<>();
+
+    @Override
+    public CliUser findById(Long id) {
+        for (CliUser user : users) {
+            if (id.equals(user.getId())) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public CliUser findByUsername(String username) {
+        for (CliUser user : users) {
+            if (username.equals(user.getUsername())) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<CliUser> findAll() {
+        return users;
+    }
 
     @Override
     public boolean exists(String username) {
-        if ("admin".equals(username)) {
-            return true;
+        for (CliUser user : users) {
+            if (username.equals(user.getUsername())) {
+                return true;
+            }
         }
         return false;
     }
@@ -55,7 +93,7 @@ public class MockUserService extends Observable implements UserService {
         return numberOfUsers;
     }
 
-    //--- util methods --------------------------------------------------------
+    //--- set / get methods ---------------------------------------------------
 
     public Observer getObserver() {
         return observer;
@@ -63,5 +101,20 @@ public class MockUserService extends Observable implements UserService {
 
     public void setObserver(Observer observer) {
         this.observer = observer;
+    }
+
+    public ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
+
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    //--- util methods --------------------------------------------------------
+
+    public void readFile(String filePath) throws IOException {
+        ClassPathResource cpr = new ClassPathResource("cli-users.json");
+        users = objectMapper.readValue(cpr.getInputStream(), new TypeReference<List<CliUser>>() { });
     }
 }
