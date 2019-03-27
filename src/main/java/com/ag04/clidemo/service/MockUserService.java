@@ -11,7 +11,6 @@ import java.util.Observer;
  * Mock implementation of UserService.
  *
  */
-@Service
 public class MockUserService extends Observable implements UserService {
 
     private Observer observer;
@@ -40,7 +39,10 @@ public class MockUserService extends Observable implements UserService {
         long numberOfUsers = 2000;
         for (long i = 1; i <= numberOfUsers; i++) {
             if (observer != null) {
-                observer.update(this, new ProgressUpdateEvent(i, numberOfUsers));
+                observer.update(
+                    this,
+                    new ProgressUpdateEvent(i, numberOfUsers, ":: please WAIT update operation in progress")
+                );
             }
             // do some operation ...
             try {

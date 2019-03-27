@@ -4,12 +4,13 @@ import com.ag04.clidemo.shell.ProgressBar;
 import com.ag04.clidemo.shell.ShellHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Observable;
 import java.util.Observer;
 
 @Service
-public class UsersUpdateObserver implements Observer {
+public class ProgressUpdateObserver implements Observer {
 
     @Autowired
     private ProgressBar progressBar;
@@ -23,10 +24,14 @@ public class UsersUpdateObserver implements Observer {
         int currentRecord = upe.getCurrentCount().intValue();
         int totalRecords = upe.getTotalCount().intValue();
 
+        String message = null;
         int percentage = currentRecord * 100 / totalRecords;
-        String message = shellHelper.getWarningMessage(":: please WAIT update operation in progress");
-        progressBar.display(percentage, message);
+        if (StringUtils.hasText(upe.getMessage())) {
+            message = shellHelper.getWarningMessage(upe.getMessage());
+            progressBar.display(percentage, message);
+        }
 
+        progressBar.display(percentage, message);
         if (currentRecord == totalRecords) {
             shellHelper.getTerminal().writer().println();
         }
