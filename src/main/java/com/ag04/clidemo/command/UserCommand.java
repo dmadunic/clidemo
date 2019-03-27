@@ -86,4 +86,13 @@ public class UserCommand {
         CliUser createdUser = userService.create(user);
         shellHelper.printSuccess("---> SUCCESS created user with id=" + createdUser.getId());
     }
+
+    @ShellMethod("Update and synchronize all users in local database with external source")
+    public void updateAllUsers() {
+        shellHelper.printInfo("Starting local user db update");
+        long numOfUsers = userService.updateAll();
+        String successMessage = shellHelper.getSuccessMessage("SUCCESS >>");
+        successMessage = successMessage + String.format(" Total of %d local db users updated!", numOfUsers);
+        shellHelper.print(successMessage);
+    }
 }
