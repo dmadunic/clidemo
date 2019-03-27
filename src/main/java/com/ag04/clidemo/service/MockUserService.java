@@ -38,17 +38,18 @@ public class MockUserService extends Observable implements UserService {
     public long updateAll() {
         long numberOfUsers = 2000;
         for (long i = 1; i <= numberOfUsers; i++) {
-            if (observer != null) {
-                observer.update(
-                    this,
-                    new ProgressUpdateEvent(i, numberOfUsers, ":: please WAIT update operation in progress")
-                );
-            }
             // do some operation ...
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            // notify observer of the change
+            if (observer != null) {
+                observer.update(
+                        this,
+                        new ProgressUpdateEvent(i, numberOfUsers, ":: please WAIT update operation in progress")
+                );
             }
         }
         return numberOfUsers;

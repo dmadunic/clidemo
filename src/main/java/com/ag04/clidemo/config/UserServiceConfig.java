@@ -15,5 +15,4 @@ public class UserServiceConfig {
         userService.setObserver(observer);
         return userService;
     }
-
 }
