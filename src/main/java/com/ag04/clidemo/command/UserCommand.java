@@ -52,38 +52,8 @@ public class UserCommand {
 
     @ShellMethod("Display details of user with supplied username")
     public void userDetails(@ShellOption({"-U", "--username"}) String username) {
-        CliUser entity = userService.findByUsername(username);
-        LinkedHashMap<String, Object> labels = new LinkedHashMap<>();
-        labels.put("id", "Id");
-        labels.put("username", "Username");
-        labels.put("fullName", "Full name");
-        labels.put("gender", "Gender");
-        labels.put("superuser", "Superuser");
-        labels.put("password", "Password");
-
-        /*
-        Map<String, String> map = objectMapper.convertValue(entity, new TypeReference<Map<String, String>>() {});
-        Object[][] entityProperties = new Object[map.size()+1][2];
-        entityProperties[0][0] = "Property";
-        entityProperties[0][1] = "Value";
-        int i = 1;
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            entityProperties[i][0] = labels.get(entry.getKey())+ ":";
-            entityProperties[i][1] = entry.getValue();
-            i++;
-        }
-        TableModel model = new ArrayTableModel(entityProperties);
-        */
-        BeanTableModelBuilder builder = new BeanTableModelBuilder(entity, objectMapper);
-        TableModel model = builder.build();
-
-        TableBuilder tableBuilder = new TableBuilder(model);
-
-        tableBuilder.addInnerBorder(BorderStyle.fancy_light);
-        tableBuilder.addHeaderBorder(BorderStyle.fancy_double);
-        tableBuilder.on(CellMatchers.column(0)).addSizer(new AbsoluteWidthSizeConstraints(20));
-        tableBuilder.on(CellMatchers.column(1)).addSizer(new AbsoluteWidthSizeConstraints(30));
-        shellHelper.print(tableBuilder.build().render(80));
+        CliUser user = userService.findByUsername(username);
+        displayUser(user);
     }
 
 
@@ -124,7 +94,7 @@ public class UserCommand {
         options.put("D", Gender.DIVERSE.name());
 
         String genderValue = inputReader.selectFromList("Gender", "Please enter one of the [] values", options, true, null);
-        Gender gender = Gender.valueOf(options.get(genderValue));
+        Gender gender = Gender.valueOf(options.get(genderValue.toUpperCase()));
         user.setGender(gender);
 
         // 4. Prompt for superuser attribute
@@ -137,11 +107,7 @@ public class UserCommand {
 
         // Print user's input -------------------------------------------------
         shellHelper.printInfo("\nCreating new user:");
-        shellHelper.print("Username: " + user.getUsername());
-        shellHelper.print("Password: " + user.getPassword());
-        shellHelper.print("Fullname: " + user.getFullName());
-        shellHelper.print("Gender: " + user.getGender());
-        shellHelper.print("Superuser: " + user.isSuperuser());
+        displayUser(user);
 
         CliUser createdUser = userService.create(user);
         shellHelper.printSuccess("---> SUCCESS created user with id=" + createdUser.getId());
@@ -155,4 +121,39 @@ public class UserCommand {
         successMessage = successMessage + String.format(" Total of %d local db users updated!", numOfUsers);
         shellHelper.print(successMessage);
     }
+
+    private void displayUser(CliUser user) {
+        LinkedHashMap<String, Object> labels = new LinkedHashMap<>();
+        labels.put("id", "Id");
+        labels.put("username", "Username");
+        labels.put("fullName", "Full name");
+        labels.put("gender", "Gender");
+        labels.put("superuser", "Superuser");
+        labels.put("password", "Password");
+
+        /*
+        Map<String, String> map = objectMapper.convertValue(entity, new TypeReference<Map<String, String>>() {});
+        Object[][] entityProperties = new Object[map.size()+1][2];
+        entityProperties[0][0] = "Property";
+        entityProperties[0][1] = "Value";
+        int i = 1;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            entityProperties[i][0] = labels.get(entry.getKey())+ ":";
+            entityProperties[i][1] = entry.getValue();
+            i++;
+        }
+        TableModel model = new ArrayTableModel(entityProperties);
+        */
+        BeanTableModelBuilder builder = new BeanTableModelBuilder(user, objectMapper);
+        TableModel model = builder.withLabels(labels).build();
+
+        TableBuilder tableBuilder = new TableBuilder(model);
+
+        tableBuilder.addInnerBorder(BorderStyle.fancy_light);
+        tableBuilder.addHeaderBorder(BorderStyle.fancy_double);
+        tableBuilder.on(CellMatchers.column(0)).addSizer(new AbsoluteWidthSizeConstraints(20));
+        tableBuilder.on(CellMatchers.column(1)).addSizer(new AbsoluteWidthSizeConstraints(30));
+        shellHelper.print(tableBuilder.build().render(80));
+    }
+
 }
