@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import javax.lang.model.UnknownEntityException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,13 +66,20 @@ public class MockUserService extends Observable implements UserService {
 
     @Override
     public CliUser create(CliUser user) {
-        user.setId(10000L);
+        user.setId(new Long(getNextId()));
+        users.add(user);
         return user;
     }
 
     @Override
     public CliUser update(CliUser user) {
-        return user;
+        for(CliUser u : users) {
+            if (u.getId().equals(user.getId())) {
+                u = user;
+                return user;
+            }
+        }
+        throw new IllegalArgumentException("No matching user found!");
     }
 
     @Override
@@ -118,5 +126,15 @@ public class MockUserService extends Observable implements UserService {
     public void init(String filePath) throws IOException {
         ClassPathResource cpr = new ClassPathResource("cli-users.json");
         users = objectMapper.readValue(cpr.getInputStream(), new TypeReference<List<CliUser>>() { });
+    }
+
+    private long getNextId() {
+        long maxId = 0;
+        for(CliUser user : users) {
+            if (user.getId().longValue() > maxId) {
+                maxId = user.getId().longValue();
+            }
+        }
+        return maxId + 1;
     }
 }

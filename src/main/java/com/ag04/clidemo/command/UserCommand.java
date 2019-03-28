@@ -5,6 +5,7 @@ import com.ag04.clidemo.model.Gender;
 import com.ag04.clidemo.service.UserService;
 import com.ag04.clidemo.shell.InputReader;
 import com.ag04.clidemo.shell.ShellHelper;
+import com.ag04.clidemo.shell.table.BeanTableModelBuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,7 @@ public class UserCommand {
         labels.put("superuser", "Superuser");
         labels.put("password", "Password");
 
+        /*
         Map<String, String> map = objectMapper.convertValue(entity, new TypeReference<Map<String, String>>() {});
         Object[][] entityProperties = new Object[map.size()+1][2];
         entityProperties[0][0] = "Property";
@@ -71,6 +73,10 @@ public class UserCommand {
             i++;
         }
         TableModel model = new ArrayTableModel(entityProperties);
+        */
+        BeanTableModelBuilder builder = new BeanTableModelBuilder(entity, objectMapper);
+        TableModel model = builder.build();
+
         TableBuilder tableBuilder = new TableBuilder(model);
 
         tableBuilder.addInnerBorder(BorderStyle.fancy_light);
