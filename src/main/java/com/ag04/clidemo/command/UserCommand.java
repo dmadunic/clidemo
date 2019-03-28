@@ -28,7 +28,8 @@ public class UserCommand {
     @Autowired
     UserService userService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @ShellMethod("Display list of users")
     public void userList() {
@@ -65,7 +66,7 @@ public class UserCommand {
         entityProperties[0][1] = "Value";
         int i = 1;
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            entityProperties[i][0] = labels.get(entry.getKey());
+            entityProperties[i][0] = labels.get(entry.getKey())+ ":";
             entityProperties[i][1] = entry.getValue();
             i++;
         }
@@ -74,6 +75,8 @@ public class UserCommand {
 
         tableBuilder.addInnerBorder(BorderStyle.fancy_light);
         tableBuilder.addHeaderBorder(BorderStyle.fancy_double);
+        tableBuilder.on(CellMatchers.column(0)).addSizer(new AbsoluteWidthSizeConstraints(20));
+        tableBuilder.on(CellMatchers.column(1)).addSizer(new AbsoluteWidthSizeConstraints(30));
         shellHelper.print(tableBuilder.build().render(80));
     }
 

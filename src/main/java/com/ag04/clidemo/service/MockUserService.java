@@ -4,6 +4,7 @@ import com.ag04.clidemo.model.CliUser;
 import com.ag04.clidemo.observer.ProgressUpdateEvent;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,8 @@ import java.util.Observer;
  */
 public class MockUserService extends Observable implements UserService {
 
-    private ObjectMapper objectMapper = new ObjectMapper();;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private Observer observer;
 
@@ -113,7 +115,7 @@ public class MockUserService extends Observable implements UserService {
 
     //--- util methods --------------------------------------------------------
 
-    public void readFile(String filePath) throws IOException {
+    public void init(String filePath) throws IOException {
         ClassPathResource cpr = new ClassPathResource("cli-users.json");
         users = objectMapper.readValue(cpr.getInputStream(), new TypeReference<List<CliUser>>() { });
     }

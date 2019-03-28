@@ -13,10 +13,11 @@ import java.io.IOException;
 public class UserServiceConfig {
 
     @Bean
-    public UserService userService(ProgressUpdateObserver observer) throws IOException {
+    public UserService userService(ProgressUpdateObserver observer, ObjectMapper objectMapper) throws IOException {
         MockUserService userService = new MockUserService();
         userService.setObserver(observer);
-        userService.readFile("cli-users.json");
+        userService.setObjectMapper(objectMapper);
+        userService.init("cli-users.json");
         return userService;
     }
 }
