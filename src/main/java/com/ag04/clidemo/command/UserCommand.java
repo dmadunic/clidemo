@@ -106,7 +106,7 @@ public class UserCommand {
         }
 
         // Print user's input -------------------------------------------------
-        shellHelper.printInfo("\nCreating new user:");
+        shellHelper.printInfo("\nCreating a new user:");
         displayUser(user);
 
         CliUser createdUser = userService.create(user);

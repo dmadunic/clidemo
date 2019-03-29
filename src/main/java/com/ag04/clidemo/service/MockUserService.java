@@ -18,15 +18,12 @@ import java.util.Observer;
 
 /**
  * Mock implementation of UserService.
- *
  */
 public class MockUserService extends Observable implements UserService {
 
     @Autowired
     private ObjectMapper objectMapper;
-
     private Observer observer;
-
     private List<CliUser> users = new ArrayList<>();
 
     @Override
