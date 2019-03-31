@@ -50,13 +50,6 @@ public class UserCommand {
         shellHelper.print(tableBuilder.build().render(80));
     }
 
-    @ShellMethod("Display details of user with supplied username")
-    public void userDetails(@ShellOption({"-U", "--username"}) String username) {
-        CliUser user = userService.findByUsername(username);
-        displayUser(user);
-    }
-
-
     @ShellMethod("Create new user with supplied username")
     public void createUser(@ShellOption({"-U", "--username"}) String username) {
         if (userService.exists(username)) {
@@ -122,6 +115,16 @@ public class UserCommand {
         shellHelper.print(successMessage);
     }
 
+    @ShellMethod("Display details of user with supplied username")
+    public void userDetails(@ShellOption({"-U", "--username"}) String username) {
+        CliUser user = userService.findByUsername(username);
+        if (user == null) {
+            shellHelper.printWarning("No user with the supplied username could be found?!");
+            return;
+        }
+        displayUser(user);
+    }
+
     private void displayUser(CliUser user) {
         LinkedHashMap<String, Object> labels = new LinkedHashMap<>();
         labels.put("id", "Id");
@@ -131,21 +134,9 @@ public class UserCommand {
         labels.put("superuser", "Superuser");
         labels.put("password", "Password");
 
-        /*
-        Map<String, String> map = objectMapper.convertValue(entity, new TypeReference<Map<String, String>>() {});
-        Object[][] entityProperties = new Object[map.size()+1][2];
-        entityProperties[0][0] = "Property";
-        entityProperties[0][1] = "Value";
-        int i = 1;
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            entityProperties[i][0] = labels.get(entry.getKey())+ ":";
-            entityProperties[i][1] = entry.getValue();
-            i++;
-        }
-        TableModel model = new ArrayTableModel(entityProperties);
-        */
+        String[] header = new String[] {"Property", "Value"};
         BeanTableModelBuilder builder = new BeanTableModelBuilder(user, objectMapper);
-        TableModel model = builder.withLabels(labels).build();
+        TableModel model = builder.withLabels(labels).withHeader(header).build();
 
         TableBuilder tableBuilder = new TableBuilder(model);
 

@@ -7,7 +7,6 @@ import org.springframework.shell.table.TableModel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
 public class BeanTableModelBuilder {
 
     private ObjectMapper objectMapper;
@@ -51,5 +50,4 @@ public class BeanTableModelBuilder {
         }
         return new ArrayTableModel(entityProperties);
     }
-
 }
