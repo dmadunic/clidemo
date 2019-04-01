@@ -61,6 +61,7 @@ public class EchoCommand {
             progressBar.display(i);
             Thread.sleep(100);
         }
+        progressBar.reset();
         shellHelper.getTerminal().writer().println();
     }
 

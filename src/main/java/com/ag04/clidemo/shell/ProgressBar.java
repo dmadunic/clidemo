@@ -1,14 +1,16 @@
 package com.ag04.clidemo.shell;
 
-import org.jline.terminal.Terminal;
-
 public class ProgressBar {
+    private static final String CUU = "\u001B[A";
+
     private String doneMarker = "=";
     private String remainsMarker = "-";
     private String leftDelimiter = "<";
     private String rightDelimiter = ">";
 
     ShellHelper shellHelper;
+
+    private boolean started = false;
 
     public ProgressBar(ShellHelper shellHelper) {
         this.shellHelper = shellHelper;
@@ -19,6 +21,10 @@ public class ProgressBar {
     }
 
     public void display(int percentage, String statusMessage) {
+        if (!started) {
+            started = true;
+            shellHelper.getTerminal().writer().println();
+        }
         int x = (percentage/5);
         int y = 20-x;
         String message = ((statusMessage == null) ? "" : statusMessage);
@@ -28,7 +34,13 @@ public class ProgressBar {
 
         String progressBar = String.format("%s%s%s%s %d", leftDelimiter, done, remains, rightDelimiter, percentage);
 
-        shellHelper.getTerminal().writer().print("\r" + progressBar + "% " + message);
+        shellHelper.getTerminal().writer().println(CUU + "\r" + progressBar + "% " + message);
+        shellHelper.getTerminal().flush();
+    }
+
+    public void reset() {
+        started = false;
+        shellHelper.getTerminal().writer().print(CUU);
         shellHelper.getTerminal().flush();
     }
 
