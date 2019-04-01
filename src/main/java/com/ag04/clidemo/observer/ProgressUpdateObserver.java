@@ -24,6 +24,11 @@ public class ProgressUpdateObserver implements Observer {
         int currentRecord = upe.getCurrentCount().intValue();
         int totalRecords = upe.getTotalCount().intValue();
 
+        if (currentRecord == 0) {
+            // just in case the previous progress bar was interrupted
+            progressBar.reset();
+        }
+
         String message = null;
         int percentage = currentRecord * 100 / totalRecords;
         if (StringUtils.hasText(upe.getMessage())) {

@@ -58,8 +58,6 @@ public class ProgressCounter {
     public void reset() {
         spinCounter = 0;
         started = false;
-        terminal.writer().print(CUU);
-        terminal.flush();
     }
 
     private char getSpinnerChar() {

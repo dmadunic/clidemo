@@ -42,7 +42,6 @@ public class EchoCommand {
             Thread.sleep(100);
         }
         progressCounter.reset();
-        shellHelper.getTerminal().writer().println();
     }
 
     @ShellMethod("Displays progress counter (with spinner)")
@@ -52,7 +51,6 @@ public class EchoCommand {
             Thread.sleep(100);
         }
         progressCounter.reset();
-        shellHelper.getTerminal().writer().println();
     }
 
     @ShellMethod("Displays progress bar")
@@ -62,7 +60,6 @@ public class EchoCommand {
             Thread.sleep(100);
         }
         progressBar.reset();
-        shellHelper.getTerminal().writer().println();
     }
 
 }

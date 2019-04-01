@@ -2,6 +2,7 @@ package com.ag04.clidemo.shell;
 
 public class ProgressBar {
     private static final String CUU = "\u001B[A";
+    private static final String DL = "\u001B[1M";
 
     private String doneMarker = "=";
     private String remainsMarker = "-";
@@ -34,14 +35,12 @@ public class ProgressBar {
 
         String progressBar = String.format("%s%s%s%s %d", leftDelimiter, done, remains, rightDelimiter, percentage);
 
-        shellHelper.getTerminal().writer().println(CUU + "\r" + progressBar + "% " + message);
+        shellHelper.getTerminal().writer().println(CUU + "\r" + DL + progressBar + "% " + message);
         shellHelper.getTerminal().flush();
     }
 
     public void reset() {
         started = false;
-        shellHelper.getTerminal().writer().print(CUU);
-        shellHelper.getTerminal().flush();
     }
 
     //--- set / get methods ---------------------------------------------------
