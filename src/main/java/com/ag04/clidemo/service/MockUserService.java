@@ -46,9 +46,13 @@ public class MockUserService extends Observable implements UserService {
             }
             // notify observer of the change
             if (observer != null) {
+                String message = "";
+                if (i < numberOfUsers) {
+                    message = ":: please WAIT update operation in progress";
+                }
                 observer.update(
                         this,
-                        new ProgressUpdateEvent(i, numberOfUsers, ":: please WAIT update operation in progress")
+                        new ProgressUpdateEvent(i, numberOfUsers, message)
                 );
             }
         }
