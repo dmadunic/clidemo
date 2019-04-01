@@ -6,11 +6,14 @@ import org.jline.terminal.Terminal;
  *
  */
 public class ProgressCounter {
+    private static final String CUU = "\u001B[A";
+
     private Terminal terminal;
     private char[] spinner = {'|', '/', '-', '\\'};
 
     private String pattern = " %s: %d ";
 
+    private boolean started = false;
     private int spinCounter = 0;
 
     public ProgressCounter(Terminal terminal) {
@@ -33,19 +36,30 @@ public class ProgressCounter {
     }
 
     public void display(int count, String message) {
+        if (!started) {
+            terminal.writer().println();
+            started = true;
+        }
         String progress = String.format(pattern, message, count);
 
-        terminal.writer().print("\r" + getSpinnerChar() + progress);
+        terminal.writer().println(CUU + "\r" + getSpinnerChar() + progress);
         terminal.flush();
     }
 
     public void display() {
-        terminal.writer().print("\r" + getSpinnerChar());
+        if (!started) {
+            terminal.writer().println();
+            started = true;
+        }
+        terminal.writer().println(CUU + "\r" + getSpinnerChar());
         terminal.flush();
     }
 
     public void reset() {
         spinCounter = 0;
+        started = false;
+        terminal.writer().print(CUU);
+        terminal.flush();
     }
 
     private char getSpinnerChar() {
