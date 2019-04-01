@@ -32,8 +32,8 @@ public class ProgressUpdateObserver implements Observer {
         }
 
         progressBar.display(percentage, message);
-        if (currentRecord == totalRecords) {
-            shellHelper.getTerminal().writer().println();
+        if (percentage == 100) {
+            progressBar.reset();
         }
     }
 }
