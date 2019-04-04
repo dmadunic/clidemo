@@ -9,7 +9,6 @@ import org.springframework.shell.table.*;
 
 import java.time.LocalDate;
 
-
 @ShellComponent
 public class TableExamplesCommand {
 

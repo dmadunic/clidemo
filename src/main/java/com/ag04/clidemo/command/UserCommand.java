@@ -9,8 +9,12 @@ import com.ag04.clidemo.shell.table.BeanTableModelBuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.shell.table.*;
 import org.springframework.util.StringUtils;
@@ -18,7 +22,7 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 
 @ShellComponent
-public class UserCommand {
+public class UserCommand extends SecuredCommand {
 
     @Autowired
     ShellHelper shellHelper;
@@ -124,6 +128,20 @@ public class UserCommand {
         }
         displayUser(user);
     }
+
+    @ShellMethod("Display details of signedIn user")
+    public void myDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CliUser user = userService.findByUsername(((User) authentication.getPrincipal()).getUsername());
+        if (user == null) {
+            shellHelper.printError("No user with the supplied username could be found?");
+            return;
+        }
+        displayUser(user);
+    }
+
+
+    //--- private methods -----------------------------------------------------
 
     private void displayUser(CliUser user) {
         LinkedHashMap<String, Object> labels = new LinkedHashMap<>();
