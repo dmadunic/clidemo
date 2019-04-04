@@ -5,15 +5,17 @@ import com.ag04.clidemo.model.Gender;
 import com.ag04.clidemo.service.UserService;
 import com.ag04.clidemo.shell.InputReader;
 import com.ag04.clidemo.shell.ShellHelper;
+import com.ag04.clidemo.shell.table.BeanTableModelBuilder;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.table.*;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @ShellComponent
 public class UserCommand {
@@ -26,6 +28,27 @@ public class UserCommand {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @ShellMethod("Display list of users")
+    public void userList() {
+        List<CliUser> users = userService.findAll();
+
+        LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
+        headers.put("id", "Id");
+        headers.put("username", "Username");
+        headers.put("fullName", "Full name");
+        headers.put("gender", "Gender");
+        headers.put("superuser", "Superuser");
+        TableModel model = new BeanListTableModel<>(users, headers);
+
+        TableBuilder tableBuilder = new TableBuilder(model);
+        tableBuilder.addInnerBorder(BorderStyle.fancy_light);
+        tableBuilder.addHeaderBorder(BorderStyle.fancy_double);
+        shellHelper.print(tableBuilder.build().render(80));
+    }
 
     @ShellMethod("Create new user with supplied username")
     public void createUser(@ShellOption({"-U", "--username"}) String username) {
@@ -64,7 +87,7 @@ public class UserCommand {
         options.put("D", Gender.DIVERSE.name());
 
         String genderValue = inputReader.selectFromList("Gender", "Please enter one of the [] values", options, true, null);
-        Gender gender = Gender.valueOf(options.get(genderValue));
+        Gender gender = Gender.valueOf(options.get(genderValue.toUpperCase()));
         user.setGender(gender);
 
         // 4. Prompt for superuser attribute
@@ -76,12 +99,8 @@ public class UserCommand {
         }
 
         // Print user's input -------------------------------------------------
-        shellHelper.printInfo("\nCreating new user:");
-        shellHelper.print("Username: " + user.getUsername());
-        shellHelper.print("Password: " + user.getPassword());
-        shellHelper.print("Fullname: " + user.getFullName());
-        shellHelper.print("Gender: " + user.getGender());
-        shellHelper.print("Superuser: " + user.isSuperuser());
+        shellHelper.printInfo("\nCreating a new user:");
+        displayUser(user);
 
         CliUser createdUser = userService.create(user);
         shellHelper.printSuccess("---> SUCCESS created user with id=" + createdUser.getId());
@@ -95,4 +114,37 @@ public class UserCommand {
         successMessage = successMessage + String.format(" Total of %d local db users updated!", numOfUsers);
         shellHelper.print(successMessage);
     }
+
+    @ShellMethod("Display details of user with supplied username")
+    public void userDetails(@ShellOption({"-U", "--username"}) String username) {
+        CliUser user = userService.findByUsername(username);
+        if (user == null) {
+            shellHelper.printWarning("No user with the supplied username could be found?!");
+            return;
+        }
+        displayUser(user);
+    }
+
+    private void displayUser(CliUser user) {
+        LinkedHashMap<String, Object> labels = new LinkedHashMap<>();
+        labels.put("id", "Id");
+        labels.put("username", "Username");
+        labels.put("fullName", "Full name");
+        labels.put("gender", "Gender");
+        labels.put("superuser", "Superuser");
+        labels.put("password", "Password");
+
+        String[] header = new String[] {"Property", "Value"};
+        BeanTableModelBuilder builder = new BeanTableModelBuilder(user, objectMapper);
+        TableModel model = builder.withLabels(labels).withHeader(header).build();
+
+        TableBuilder tableBuilder = new TableBuilder(model);
+
+        tableBuilder.addInnerBorder(BorderStyle.fancy_light);
+        tableBuilder.addHeaderBorder(BorderStyle.fancy_double);
+        tableBuilder.on(CellMatchers.column(0)).addSizer(new AbsoluteWidthSizeConstraints(20));
+        tableBuilder.on(CellMatchers.column(1)).addSizer(new AbsoluteWidthSizeConstraints(30));
+        shellHelper.print(tableBuilder.build().render(80));
+    }
+
 }

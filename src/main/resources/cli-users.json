@@ -1,0 +1,28 @@
+[
+  {"id": 1000,"username": "knavas", "password": "goalkeepe1r", "fullName": "Keylor Navas", "gender": "MALE","superuser" : "false" },
+  {"id": 1001,"username": "tcourtois", "password": "goalkeeper25", "fullName": "Thibaut Courtois", "gender": "MALE","superuser" : "false" },
+  {"id": 1002,"username": "lfernandez", "password": "goalkeeper30", "fullName": "Luca Fernández", "gender": "MALE","superuser" : "false" },
+  {"id": 1003,"username": "dcarvajal", "password": "defender2", "fullName": "Daniel Carvajal Ramos", "gender": "MALE","superuser" : "false" },
+  {"id": 1004,"username": "jvallejo", "password": "defender3", "fullName": "Jesús Vallejo Lázaro", "gender": "MALE","superuser" : "false" },
+  {"id": 1005,"username": "sramos", "password": "defender4", "fullName": "Sergio Ramos García", "gender": "MALE","superuser" : "true" },
+  {"id": 1006,"username": "rvarane", "password": "defender5", "fullName": "Raphaël Varane", "gender": "MALE","superuser" : "false" },
+  {"id": 1007,"username": "nacho", "password": "defender6", "fullName": "José I. Fernández Iglesias", "gender": "MALE","superuser" : "false" },
+  {"id": 1008,"username": "marcelov", "password": "defender12", "fullName": "Marcelo Vieira da Silva", "gender": "MALE","superuser" : "false" },
+  {"id": 1009,"username": "aodriozola", "password": "defender19", "fullName": "Álvaro Odriozola", "gender": "MALE","superuser" : "false" },
+  {"id": 1010,"username": "sreguilon", "password": "defender23", "fullName": "Sergio Reguilón Rodríguez", "gender": "MALE","superuser" : "false" },
+  {"id": 1011,"username": "tkroos", "password": "midfielder8", "fullName": "Toni Kroos", "gender": "MALE","superuser" : "false" },
+  {"id": 1012,"username": "lmodric", "password": "midfielder10", "fullName": "Luka Modrić", "gender": "MALE","superuser" : "true" },
+  {"id": 1013,"username": "ccasimiro", "password": "midfielder14", "fullName": "Carlos Henrique Casimiro", "gender": "MALE","superuser" : "false" },
+  {"id": 1014,"username": "fvalverde", "password": "midfielder15", "fullName": "Federico Santiago Valverde Dipetta", "gender": "MALE","superuser" : "false" },
+  {"id": 1015,"username": "mllorente", "password": "midfielder18", "fullName": "Marcos Llorente Moreno", "gender": "MALE","superuser" : "false" },
+  {"id": 1016,"username": "masensio", "password": "midfielder20", "fullName": "Marco Asensio Willemsen", "gender": "MALE","superuser" : "false" },
+  {"id": 1017,"username": "dbrahim", "password": "midfielder21", "fullName": "Brahim Díaz", "gender": "MALE","superuser" : "false" },
+  {"id": 1018,"username": "isco", "password": "midfielder22", "fullName": "Francisco Román  Alarcón", "gender": "MALE","superuser" : "false" },
+  {"id": 1019,"username": "dceballos", "password": "midfielder24", "fullName": "Daniel Ceballos Fernández", "gender": "MALE","superuser" : "false" },
+  {"id": 1020,"username": "dmariano", "password": "forward7", "fullName": "Mariano Díaz Mejía", "gender": "MALE","superuser" : "false" },
+  {"id": 1021,"username": "kbenzema", "password": "forward9", "fullName": "Karim Benzema", "gender": "MALE","superuser" : "true" },
+  {"id": 1022,"username": "gbale", "password": "forward11", "fullName": "Gareth Bale", "gender": "MALE","superuser" : "true" },
+  {"id": 1023,"username": "lvazquez", "password": "forward17", "fullName": "Lucas Vázquez Iglesias", "gender": "MALE","superuser" : "false" },
+  {"id": 1024,"username": "vinicius", "password": "forward28", "fullName": "Vinicius Paixao de Oliveira Junior", "gender": "MALE","superuser" : "false" }
+]
+

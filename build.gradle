@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'org.springframework.shell:spring-shell-starter:2.0.1.RELEASE'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
