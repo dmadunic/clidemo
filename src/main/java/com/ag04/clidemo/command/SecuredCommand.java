@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellMethodAvailability;
 
-public class SecuredCommand {
+public abstract class SecuredCommand {
 
     @ShellMethodAvailability({"user-list", "my-details"})
     public Availability isUserSignedIn() {
@@ -24,7 +24,7 @@ public class SecuredCommand {
             return Availability.unavailable("you are not signedIn. Please sign in to be able to use this command!");
         }
         if (!authentication.getAuthorities().contains("ROLE_ADMIN")) {
-            return Availability.unavailable("insufficient privileges to run this command!");
+            return Availability.unavailable("you have insufficient privileges to run this command!");
         }
         return Availability.available();
     }
