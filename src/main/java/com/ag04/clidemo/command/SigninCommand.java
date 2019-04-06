@@ -28,7 +28,7 @@ public class SigninCommand extends SecuredCommand {
     AuthenticationManager authenticationManager;
 
     @ShellMethod("Sign in as clidemo user")
-    public void signIn() {
+    public void signin() {
         String username;
         boolean usernameInvalid = true;
         do {
@@ -45,7 +45,7 @@ public class SigninCommand extends SecuredCommand {
         try {
             Authentication result = authenticationManager.authenticate(request);
             SecurityContextHolder.getContext().setAuthentication(result);
-            shellHelper.printSuccess("User: " + username + " successfully authenticated! --> Welcome to CliDemo.");
+            shellHelper.printSuccess("Credentials successfully authenticated! " + username + " -> welcome to CliDemo.");
         } catch (AuthenticationException e) {
             shellHelper.printWarning("Authentication failed: " + e.getMessage());
         }
