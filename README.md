@@ -23,11 +23,13 @@ Now you can run it by executing the following command:
 ./run-cli.sh
 ```
 
-## Release new version
+## (Manual) Release new version
 Make sure that file gradle.properties in the folder ${USER_HOME}/.gradle/ contains the following two variables defined:
 
 * github_username
-* github_password : personal github token to be used to install/update packages
+* github_password : personal github token (PAT) to be used to install/update packages
+
+For more on creating personal github token (PAT) see this [link](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 1) Commit and push everything
 2) `./gradlew release`

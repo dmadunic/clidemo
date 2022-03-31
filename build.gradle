@@ -24,15 +24,13 @@ publishing {
         }
     }
     repositories {
-        if (project.hasProperty('github_username') && project.hasProperty('github_password')) {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/dmadunic/clidemo")
-                credentials {
-                    username github_username
-                    password github_password
-                }
-            }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/dmadunic/clidemo")
+			credentials {
+				username = project.hasProperty('github_username') ?: System.getenv("GITHUB_ACTOR")
+            	password = project.hasProperty('github_password') ?: System.getenv("GITHUB_TOKEN")
+			}
         }
     }
 }
