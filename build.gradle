@@ -1,7 +1,7 @@
 plugins {
 	id 'maven-publish'
     id 'net.researchgate.release' version '2.8.1'
-	id 'org.springframework.boot' version '2.1.3.RELEASE'
+	id "org.springframework.boot" version "${springBootVersion}"
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -19,7 +19,7 @@ repositories {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId 'com.ag04.opta'
+            groupId 'com.ag04'
             from(components.java)
         }
     }
@@ -38,7 +38,7 @@ publishing {
 afterReleaseBuild.dependsOn publish
 
 dependencies {
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation "org.springframework.shell:spring-shell-starter:${springShellVersion}"
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }
