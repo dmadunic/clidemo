@@ -1,12 +1,13 @@
 plugins {
 	id 'org.springframework.boot' version '2.1.3.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
-apply plugin: 'io.spring.dependency-management'
+// apply plugin: 'io.spring.dependency-management'
 
 group = 'com.ag04'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0'
 sourceCompatibility = '1.8'
 
 repositories {

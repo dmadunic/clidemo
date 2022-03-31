@@ -27,3 +27,4 @@
 /.nb-gradle/
 
 spring-shell\.log
+/.vscode/
