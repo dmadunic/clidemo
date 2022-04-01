@@ -1,0 +1,26 @@
+spring:
+  main:
+    banner-mode: console
+  shell:
+    command:
+      completion:
+        root-command: cli-demo
+logging:
+  pattern:
+    console:
+## log debug from a cli
+  file:
+    name: logs/clidemo.log
+  level:
+    root: debug
+    org:
+      springframework:
+        shell: debug
+
+# -- contextual colors ----------------------------------------
+shell:
+    out:
+        info: CYAN
+        success: GREEN
+        warning: YELLOW
+        error: RED

@@ -6,9 +6,9 @@ import com.ag04.clidemo.service.UserService;
 import com.ag04.clidemo.shell.InputReader;
 import com.ag04.clidemo.shell.ShellHelper;
 import com.ag04.clidemo.shell.table.BeanTableModelBuilder;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -24,6 +24,7 @@ public class UserCommand {
     ShellHelper shellHelper;
 
     @Autowired
+    @Lazy
     InputReader inputReader;
 
     @Autowired

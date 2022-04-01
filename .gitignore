@@ -28,3 +28,4 @@
 
 spring-shell\.log
 /.vscode/
+logs/
